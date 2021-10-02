@@ -1,0 +1,46 @@
+<div style="margin-top:100px;">
+</div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<mat-card class="mat-card-login">
+  <mat-card-title style="text-align: left;">
+<h3>Login</h3>
+  </mat-card-title>
+  <mat-card-content style="text-align: center;">
+<section class="display-section">
+<mat-form-field class="mat-form-field-edit" appearance="fill">
+  <mat-label>User Name</mat-label>
+  <input formControlName="userName" name="userName" id="userName" matInput
+  placeholder="User Name" >
+  <mat-error *ngIf="!loginForm.get('userName').valid || loginForm.get('userName').touched">
+    <span *ngIf="loginForm.get('userName').hasError('required')"><strong>Username: </strong>required</span>
+    <span *ngIf="loginForm.get('userName').errors && loginForm.get('userName').errors.minlength"><strong>Username: </strong>minimum 6 characters required</span>
+    <span *ngIf="loginForm.get('userName').errors && loginForm.get('userName').errors.maxlength"><strong>Username: </strong>maximum 20 characters allowed</span>
+  </mat-error>
+</mat-form-field>
+</section>
+
+<section class="display-section">
+  <mat-form-field class="mat-form-field-edit" appearance="fill">
+    <mat-label>Password</mat-label>
+    <input type="password" formControlName="password" name="password" id="password" matInput
+    placeholder="User Name" >
+    <mat-error *ngIf="!loginForm.get('password').valid || loginForm.get('password').touched">
+      <span *ngIf="loginForm.get('password').hasError('required')"><strong>Password: </strong>required</span>
+      <span *ngIf="loginForm.get('password').errors && loginForm.get('password').errors.minlength"><strong>Password: </strong>minimum 8 characters required</span>
+      <span *ngIf="loginForm.get('password').errors && loginForm.get('password').errors.maxlength"><strong>Password: </strong>maximum 20 characters allowed</span>
+    </mat-error>
+  </mat-form-field>
+  </section>
+  <section class="display-section">
+    <button mat-raised-button class="mat-button" color="accent" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm-1"></span>
+      <b>Login</b>
+    </button>
+<!-- <a mat-button  routerLink="/register" disabled class="btn btn-link"><b>Register</b></a> -->
+
+  </section>
+
+  </mat-card-content>
+
+</mat-card>
+</form>

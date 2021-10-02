@@ -1,0 +1,102 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~bootstrap/dist/css/bootstrap.css";
+
+.display-section{
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 90px;
+}
+
+.display-section-class{
+  display: flex;
+  align-content: center;
+  align-itms: center;
+  height: 70px;
+}
+
+.display-section-label{
+  display: flex;
+  align-content: center;
+  align-itms: center;
+  height: 30px;
+}
+
+.mat-form-field-edit{
+
+}
+.mat-form-field{
+  width: 99%;
+}
+
+.mat-button{
+  margin:8px !important;
+}
+
+.snackBar-custom-success{
+  background-color: green;
+  color: white;
+}
+
+.snackBar-custom-error{
+  background-color: brown;
+  color: white;
+}
+
+.mat-card-login{
+  width: 400px;
+  height: 330px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align:middle;
+}
+.mat-card-class-edit{
+  width: 550px;
+  height: 600px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align:middle;
+
+}
+
+.mat-card-class-edit-content{
+  height: 300px;
+  overflow-y: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align:middle;
+
+}
+
+
+table{
+  width:100%;
+}
+
+.mat-form-field{
+  font-size: 14px;
+  width:100%
+}
+
+.mat-header-cell{
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+  background-color: lemonchiffon;
+}
+
+.mat-row:hover .mat-cell{
+  border-color: currentColor;
+}
+
+.mat-row .mat-cel{
+  border-top: 1px solid transparent !important;
+  border-bottom: 1px solid transparent;
+  cursor: pointer !important;
+}
+

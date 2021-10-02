@@ -1,0 +1,105 @@
+<div *ngIf="isAuthorized" style="width: 100%;background-color: #ebdede !important;">
+<div class="container">
+  <div class="row justify-content-end">
+    <div class="col col-6" style="text-align: right !important;" >
+      Welcome : <b>{{userName}}</b>
+    </div>
+
+  </div>
+</div>
+</div>
+<header>
+  <nav style="background-color: #ebdede !important;"
+  class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white
+  border-bottom box-shadow mb-3">
+<div class="container">
+  <a class="navbar-brand" [routerLink]="['/']"><b>{{schoolname}}</b></a>
+  <button class="navbar-toggler"
+  type="button" data-toggle="collapse" data-target=".navbar-collapse"
+  aria-label="Toggle nagigation"
+  [attr.aria-expanded]="isExpanded"
+  (click)="toggle()"
+  >
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+[ngClass]="{show: isExpanded}">
+<ul class="navbar-nav flex-grow">
+
+<li class="nav-item"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button [routerLink]="['/']"><strong>Home</strong>
+</button>
+</li>
+
+<li class="nav-item" *ngIf="isAuthorized"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button [matMenuTriggerFor]="serMenu" >
+  <strong>Student Exam Result</strong>
+</button>
+<mat-menu #serMenu="matMenu" >
+  <button mat-menu-item [routerLink]="['/studentsearchresult']">Student Search Result</button>
+  <button mat-menu-item [routerLink]="['/classwiseresult']">Classwise Result</button>
+  <button mat-menu-item [routerLink]="['/resultcharts']">Result Charts</button>
+  <button mat-menu-item [routerLink]="['/top10studentsearch']">Top 10 Students Search</button>
+</mat-menu>
+</li>
+
+<li class="nav-item" *ngIf="isAuthorized"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button [matMenuTriggerFor]="feeMenu" >
+  <strong>Fee Details</strong>
+</button>
+<mat-menu #feeMenu="matMenu" >
+  <button mat-menu-item [routerLink]="['/studentsearchresult']">Studentwise Search</button>
+  <button mat-menu-item [routerLink]="['/classwiseresult']">Classwise Results</button>
+  <button mat-menu-item [routerLink]="['/resultcharts']">Result Charts</button>
+</mat-menu>
+</li>
+
+<li class="nav-item" *ngIf="isAuthorized"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button [matMenuTriggerFor]="sdmMenu" >
+  <strong>Student Daily Menu</strong>
+</button>
+<mat-menu #sdmMenu="matMenu" >
+  <button mat-menu-item [routerLink]="['/studentsearchresult']">Classwise Attendence Add/Update</button>
+  <button mat-menu-item [routerLink]="['/classwiseresult']">Attendence Report</button>
+</mat-menu>
+</li>
+
+<li class="nav-item" *ngIf="isAuthorized"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button [routerLink]="['/']"><strong>QR Code</strong>
+</button>
+</li>
+
+<li class="nav-item" *ngIf="!isAuthorized"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button [routerLink]="['/login']"><strong>Login</strong>
+</button>
+</li>
+
+<li class="nav-item" *ngIf="isAuthorized"
+  [routerLinkActive]="['link-active']"
+  [routerLinkActiveOptions]="{ exact: true}">
+<button mat-button (click)="logout()"><strong>Logout</strong>
+</button>
+</li>
+
+
+
+</ul>
+
+
+</div>
+</div>
+</nav>
+</header>
+

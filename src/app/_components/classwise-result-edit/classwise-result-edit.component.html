@@ -1,0 +1,120 @@
+<form [formGroup]='form' >
+  <mat-card class="mat-card-class-edit">
+    <mat-card-title>
+      <label mat-card-title>Student Marks Edit</label>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <section class="display-section-label">
+        <mat-label>Student ID : {{sid}}</mat-label>
+      </section>
+        <section class="display-section-label">
+          <mat-label>Student Name : {{sname}}</mat-label>
+        </section>
+        <section class="display-section-class">
+          <mat-label>Class Section : {{classsec}}</mat-label>
+        </section>
+    </mat-card-subtitle>
+    <mat-card-content class="mat-card-class-edit-content">
+      <section class="display-section-class">
+        <mat-form-field class="mat-form-field-edit" appearance="fill">
+          <mat-label>First Language</mat-label>
+          <input type="number" formControlName="firstlang" name="firstlang" id="firstlang"
+          matInput placeholder="First Language" >
+          <mat-error *ngIf="!form.get('firstlang').valid || form.get('firstlang').touched">
+            <span *ngIf="form.get('firstlang').hasError('required')"><strong>First Language: </strong>required</span>
+            <span *ngIf="form.get('firstlang').errors && (form.get('firstlang').errors.min ||
+            form.get('firstlang').errors.max || form.get('firstlang').errors.minlength ||
+            form.get('firstlang').errors.maxlength)">
+              <strong>First Language: </strong>manimum: 1 and maximum: 100</span>
+          </mat-error>
+        </mat-form-field>
+        </section>
+
+        <section class="display-section-class">
+          <mat-form-field class="mat-form-field-edit" appearance="fill">
+            <mat-label>Second Language</mat-label>
+            <input type="number" formControlName="secondlang" name="secondlang" id="secondlang"
+            matInput placeholder="Second Language" >
+            <mat-error *ngIf="!form.get('secondlang').valid || form.get('secondlang').touched">
+              <span *ngIf="form.get('secondlang').hasError('required')"><strong>Second Language: </strong>required</span>
+              <span *ngIf="form.get('secondlang').errors && (form.get('secondlang').errors.min ||
+              form.get('secondlang').errors.max || form.get('secondlang').errors.minlength ||
+              form.get('secondlang').errors.maxlength)">
+                <strong>Second Language: </strong>manimum: 1 and maximum: 100</span>
+            </mat-error>
+          </mat-form-field>
+          </section>
+
+          <section class="display-section-class">
+            <mat-form-field class="mat-form-field-edit" appearance="fill">
+              <mat-label>English</mat-label>
+              <input type="number" formControlName="english" name="english" id="english"
+              matInput placeholder="English" >
+              <mat-error *ngIf="!form.get('english').valid || form.get('english').touched">
+                <span *ngIf="form.get('english').hasError('required')"><strong>English: </strong>required</span>
+                <span *ngIf="form.get('english').errors && (form.get('english').errors.min ||
+                form.get('english').errors.max || form.get('english').errors.minlength ||
+                form.get('english').errors.maxlength)">
+                  <strong>English: </strong>manimum: 1 and maximum: 100</span>
+              </mat-error>
+            </mat-form-field>
+            </section>
+
+            <section class="display-section-class">
+              <mat-form-field class="mat-form-field-edit" appearance="fill">
+                <mat-label>Mathametics</mat-label>
+                <input type="number" formControlName="maths" name="maths" id="maths"
+                matInput placeholder="Mathametics" >
+                <mat-error *ngIf="!form.get('maths').valid || form.get('maths').touched">
+                  <span *ngIf="form.get('maths').hasError('required')"><strong>Mathametics: </strong>required</span>
+                  <span *ngIf="form.get('maths').errors && (form.get('maths').errors.min ||
+                  form.get('maths').errors.max || form.get('maths').errors.minlength ||
+                  form.get('maths').errors.maxlength)">
+                    <strong>Mathametics: </strong>manimum: 1 and maximum: 100</span>
+                </mat-error>
+              </mat-form-field>
+              </section>
+
+              <section class="display-section-class">
+                <mat-form-field class="mat-form-field-edit" appearance="fill">
+                  <mat-label>Science</mat-label>
+                  <input type="number" formControlName="science" name="science" id="science"
+                  matInput placeholder="Science" >
+                  <mat-error *ngIf="!form.get('science').valid || form.get('science').touched">
+                    <span *ngIf="form.get('science').hasError('required')"><strong>Science: </strong>required</span>
+                    <span *ngIf="form.get('science').errors && (form.get('science').errors.min ||
+                    form.get('science').errors.max || form.get('science').errors.minlength ||
+                    form.get('science').errors.maxlength)">
+                      <strong>Science: </strong>manimum: 1 and maximum: 100</span>
+                  </mat-error>
+                </mat-form-field>
+                </section>
+
+                <section class="display-section-class">
+                  <mat-form-field class="mat-form-field-edit" appearance="fill">
+                    <mat-label>Social</mat-label>
+                    <input type="number" formControlName="social" name="social" id="social"
+                    matInput placeholder="Science" >
+                    <mat-error *ngIf="!form.get('social').valid || form.get('social').touched">
+                      <span *ngIf="form.get('social').hasError('required')"><strong>Social: </strong>required</span>
+                      <span *ngIf="form.get('social').errors && (form.get('social').errors.min ||
+                      form.get('social').errors.max || form.get('social').errors.minlength ||
+                      form.get('social').errors.maxlength)">
+                        <strong>Social: </strong>manimum: 1 and maximum: 100</span>
+                    </mat-error>
+                  </mat-form-field>
+                  </section>
+    </mat-card-content>
+    <mat-card-actions>
+      <section class="display-section">
+        <button mat-raised-button class="mat-button" color="accent" (click)="onSubmit()"
+        [disabled] ="form.invalid"
+        >
+          <b>Update</b>
+        </button>
+        <button mat-button (click)="close()">Close</button>
+      </section>
+    </mat-card-actions>
+  </mat-card>
+
+</form>
