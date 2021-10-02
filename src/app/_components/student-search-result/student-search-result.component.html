@@ -27,8 +27,8 @@
           <mat-label>Exam Type</mat-label>
           <mat-select formControlName="examtypeid" matInput placeholder="Select Exam Type"
            >
-           <mat-option *ngFor="let item of examtypes" [value]="item.examtypeid">
-             {{item.examtypename}}
+           <mat-option *ngFor="let item of examtypes" [value]="item.id">
+             {{item.examtype}}
            </mat-option>
            </mat-select>
           <mat-error *ngIf="!ssrForm.get('examtypeid').valid || ssrForm.get('examtypeid').touched">

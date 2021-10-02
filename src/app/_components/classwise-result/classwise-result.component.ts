@@ -3,12 +3,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MatPaginator, MatSort, MatTableDataSource, MAT_DIALOG_DATA  } from '@angular/material';
 import { Router } from '@angular/router';
-import { Classes } from 'src/app/_models/classes';
+import { Standards } from 'src/app/_models/Standards';
 import { Examtypes } from 'src/app/_models/examtypes';
-import { Studentsearchresult } from 'src/app/_models/studentsearchresult';
+import { StudentResult } from 'src/app/_models/StudentResult';
 import { AlertService } from 'src/app/_services/alert.service';
-import { StudentMarksService } from 'src/app/_services/student/student-marks.service';
 import { ClasswiseResultEditComponent } from '../classwise-result-edit/classwise-result-edit.component';
+import { StudentService } from 'src/app/_services/student/student.service';
 
 
 @Component({
@@ -22,20 +22,21 @@ export class ClasswiseResultComponent implements OnInit {
   loading: boolean = false;
   submit: boolean = false;
   cwrForm: FormGroup;
-  classes: Classes[];
-  selection = new SelectionModel<Studentsearchresult>(true, []);
-  dataSource = new MatTableDataSource<Studentsearchresult>([]);
+  standards: Standards[];
+  examtypes: Examtypes[];
+  selection = new SelectionModel<StudentResult>(true, []);
+  dataSource = new MatTableDataSource<StudentResult>([]);
   hasData: boolean = false;
 
-  displayColumns: string[] = ['actions' ,'sid', 'sname', 'classsection', 'firstLan', 'secondLan',
-'engilsh', 'maths', 'science', 'social', 'rank'];
+  displayColumns: string[] = ['actions' ,'sid', 'sname', 'classsection', 'telugu', 'hindi',
+'engilsh', 'maths', 'science', 'social', 'examptype'];
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private formBuilder: FormBuilder,
     private alertService: AlertService,
-    private studentService: StudentMarksService
+    private studentService: StudentService
     ) {
 
      }
@@ -45,41 +46,47 @@ export class ClasswiseResultComponent implements OnInit {
 
   ngOnInit() {
     this.cwrForm = this.formBuilder.group({
-      classid: ['', [Validators.required]]
+      standardId: ['', [Validators.required]],
+      examTypeId: ['', [Validators.required]],
     });
 
-    this.getClasses();
+    this.getStandards();
+    this.getExamTypes();
 
     this.dataSource.data = null;
- this.dataSource.sort = null;
- this.dataSource.paginator= null;
+    this.dataSource.sort = null;
+    this.dataSource.paginator= null;
 
   }
 
-  getClasses() {
-    this.classes  = [
-      { classid: 1, classname: '1st'},
-      { classid: 2, classname: '2nd'},
-      { classid: 3, classname: '3rd'},
-      { classid: 4, classname: '4th'},
-      { classid: 5, classname: '5th'},
-    ]
+  getStandards() {
+    this.studentService.getAllStandards().subscribe(res => {
+      this.standards = res;
+    });
+
   }
 
-  getData() {
-const res = this.studentService.getStudentMarksByClass(1);
+  getExamTypes() {
 
-if(res.length > 0){
-  this.hasData = true;
+    this.studentService.getAllExamTypes().subscribe(res => {
+      this.examtypes = res;
+    });
+  }
 
- //this.dataSource = new MatTableDataSource();
- this.dataSource.data = res;
- this.dataSource.sort = this.sort;
- this.dataSource.paginator=this.paginator;
-}
-else
-this.hasData = false;
-}
+//   getData() {
+// const res = this.studentService.getStudentResultByStandard();
+
+// if(res.length > 0){
+//   this.hasData = true;
+
+//  //this.dataSource = new MatTableDataSource();
+//  this.dataSource.data = res;
+//  this.dataSource.sort = this.sort;
+//  this.dataSource.paginator=this.paginator;
+// }
+// else
+// this.hasData = false;
+// }
 
 
 
@@ -112,7 +119,7 @@ this.hasData = false;
     console.log(this.selection.selected);
   }
 
-  openEditDialog(event, schoolObj: Studentsearchresult): void {
+  openEditDialog(event, schoolObj: StudentResult): void {
     console.log('test edit');
     console.log(schoolObj);
 
@@ -121,14 +128,14 @@ this.hasData = false;
       // width: '600px',
       data: {
           sid : schoolObj.sid,
-          sname: schoolObj.sname,
-          classsec: schoolObj.classsection,
-          firstlang : Number(schoolObj.firstLan),
-          secondlang: Number(schoolObj.secondLan),
-          english: Number(schoolObj.engilsh),
-          maths: Number(schoolObj.maths),
-          science: Number(schoolObj.science),
-          social: Number(schoolObj.social)
+          // sname: schoolObj.sname,
+          // classsec: schoolObj.classsection,
+          // telugu : Number(schoolObj.telugu),
+          // hindi: Number(schoolObj.hindi),
+          // english: Number(schoolObj.english),
+          // maths: Number(schoolObj.maths),
+          // science: Number(schoolObj.science),
+          // social: Number(schoolObj.social)
           }
     });
     editDialog.disableClose = true;
@@ -147,7 +154,10 @@ this.hasData = false;
       console.log('modified data' + result.data.sid);
 
         console.log('modified data' + result.data.firstLan);
-        this.getData();
+        //this.getData();
+
+        this.getData(this.cwrForm.controls.standardId.value,
+          Number(this.cwrForm.controls.examTypeId.value));
 
     })
   }
@@ -161,17 +171,28 @@ this.hasData = false;
 
       this.loading = true;
 
-      let cid = this.cwrForm.controls.classid.value;
-
-      this.getData();
-      console.log(cid);
+      let standardId = this.cwrForm.controls.standardId.value;
+      let examTypeId = this.cwrForm.controls.examTypeId.value;
 
 
+      console.log(standardId);
+      console.log(examTypeId);
 
-      // get the data from service
+      this.getData(standardId,Number(examTypeId));
+      this.submit = false;
 
+  }
 
-      this.loading = false;
+  getData(standardId: string, examTypeId: number)
+  {
+    this.studentService.getStudentResultByStandard(standardId, examTypeId).subscribe(
+      res => {
+          this.dataSource.data = res;
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator=this.paginator;
+          this.loading = false;
+      }
+    );
   }
 
 }

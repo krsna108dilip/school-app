@@ -1,4 +1,4 @@
 export class Examtypes {
-  examtypeid: number;
-  examtypename: string;
+  id: number;
+  examtype: string;
 }

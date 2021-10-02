@@ -11,7 +11,6 @@ import { RegisterComponent } from 'src/app/_components/register/register.compone
 import { HomeComponent } from 'src/app/_components/home/home.component';
 import { NavMenuComponent } from 'src/app/_components/nav-menu/nav-menu.component';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
-import { fakeBackendProvider } from 'src/app/_helpers/fake-backend';
 import { AlertService } from 'src/app/_services/alert.service';
 import { ConfirmDialogComponent } from 'src/app/_components/confirm-dialog/confirm-dialog.component';
 import { StudentSearchResultComponent } from 'src/app/_components/student-search-result/student-search-result.component';
@@ -20,7 +19,7 @@ import { JwtInterceptor } from 'src/app/_helpers/JwtInterceptor';
 import { ErrorInterceptor } from 'src/app/_helpers/ErrorInterceptor';
 import { ClasswiseResultEditComponent } from 'src/app/_components/classwise-result-edit/classwise-result-edit.component';
 import { MatDialogRef } from '@angular/material';
-import { StudentMarksService } from 'src/app/_services/student/student-marks.service';
+import { StudentService } from 'src/app/_services/student/student.service';
 
 @NgModule({
   declarations: [
@@ -43,8 +42,8 @@ import { StudentMarksService } from 'src/app/_services/student/student-marks.ser
     AppRoutingModule,
     MaterialModule
   ],
-  providers: [AuthenticationService, AlertService, StudentMarksService,
-    fakeBackendProvider,
+  providers: [AuthenticationService, AlertService, StudentService,
+
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
 
@@ -54,3 +53,5 @@ import { StudentMarksService } from 'src/app/_services/student/student-marks.ser
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// fakeBackendProvider,

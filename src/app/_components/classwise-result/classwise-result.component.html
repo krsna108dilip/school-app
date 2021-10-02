@@ -10,14 +10,26 @@
       <section style="display: inline !important;" >
         <mat-form-field class="mat-form-field-edit" style="width:88% !important;" appearance="fill">
           <mat-label>Class</mat-label>
-          <mat-select formControlName="classid" matInput placeholder="Select Class"
+          <mat-select formControlName="standardId" matInput placeholder="Select Standard"
            >
-           <mat-option *ngFor="let item of classes" [value]="item.classid">
-             {{item.classname}}
+           <mat-option *ngFor="let item of standards" [value]="item.id">
+             {{item.standard}}
            </mat-option>
            </mat-select>
-          <mat-error *ngIf="!cwrForm.get('classid').valid || cwrForm.get('classid').touched">
-            <span *ngIf="cwrForm.get('classid').hasError('required')"><strong>Class: </strong>please choose</span>
+          <mat-error *ngIf="!cwrForm.get('standardId').valid || cwrForm.get('standardId').touched">
+            <span *ngIf="cwrForm.get('standardId').hasError('required')"><strong>Class: </strong>please choose</span>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="mat-form-field-edit" style="width:88% !important;" appearance="fill">
+          <mat-label>Exam Type</mat-label>
+          <mat-select formControlName="examTypeId" matInput placeholder="Select Exam"
+           >
+           <mat-option *ngFor="let item of examtypes" [value]="item.id">
+             {{item.examtype}}
+           </mat-option>
+           </mat-select>
+          <mat-error *ngIf="!cwrForm.get('examTypeId').valid || cwrForm.get('examTypeId').touched">
+            <span *ngIf="cwrForm.get('examTypeId').hasError('required')"><strong>Exam Type: </strong>please choose</span>
           </mat-error>
         </mat-form-field>
           <button mat-raised-button class="mat-button" color="accent" [disabled]="loading">

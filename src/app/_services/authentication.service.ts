@@ -15,27 +15,31 @@ export class AuthenticationService {
   private refreshTokenTimeout;
 
   private schoolObject: School[] = [
-    {id: 1, name: 'User1234', address: 'Kukatpally, Hyderabad - 500072',
+{
+  jwtToken: '',
+   school: [{id: 1, name: 'Test School', address: 'Kukatpally, Hyderabad - 500072',
     mobileno: 9874563210, email: 'test@gmail.com', phoneno: 12345678,
-    schoolname: 'Bhasyam School',
-    usersList: [{ userid: 1, username: 'User1234', password: 'User1234',
-    lastlogin: '',
-      role: [{ roleid: 1, rolename: 'User'}]
-    }],
-    jwtToken: '',
-    jwtToken
-  },
-    {id: 2, name: 'Admin1234', address: 'Kukatpally, Hyderabad - 500072',
+    userList: [{ id : 1, username: 'Admin1234', password : 'Admin1234', lastlogin : '',
+    role: [{
+      id: 1,
+      rolename: 'Admin'
+    }]
+  }]
+  }]
+},
+{
+  jwtToken: '',
+   school: [{id: 2, name: 'Test School2', address: 'Kukatpally, Hyderabad - 500072',
     mobileno: 9874563210, email: 'test@gmail.com', phoneno: 12345678,
-     schoolname: 'Bhasyam School',
-     usersList: [{ userid: 1, username: 'Admin1234', password: 'Admin1234',
-      lastlogin: '',
-      role: [{ roleid: 2, rolename: 'Admin'}]
-    }],
-    jwtToken: '',
-
-    },
-  ]
+    userList: [{ id : 1, username: 'Admin1234', password : 'Admin1234', lastlogin : '',
+    role: [{
+      id: 1,
+      rolename: 'Admin'
+    }]
+  }]
+  }]
+}
+];
 
 constructor(private http: HttpClient) {
   this.currentSchoolSubject = new BehaviorSubject<School>(
@@ -53,8 +57,8 @@ return this.http.post<any>(`${environment.apiUrl}schoolUsers/userCheck`,
   {username, password})
   .pipe(map(school => {
     if (school) {
-      sessionStorage.setItem('currentUser', JSON.stringify(school));
-      this.currentUserSubject.next(school);
+      sessionStorage.setItem('currentSchool', JSON.stringify(school));
+      this.currentSchoolSubject.next(school);
     }
     else
     {
@@ -62,19 +66,18 @@ return this.http.post<any>(`${environment.apiUrl}schoolUsers/userCheck`,
     }
   }));
 
-  if (this.schoolObject.some(s => s.name === username)) {
-    const school = this.schoolObject.find(s => s.usersList[0].username === username &&
-      s.usersList[0].password === password);
-    console.log(school);
-    sessionStorage.setItem('currentSchool', JSON.stringify(school));
-    this.currentSchoolSubject.next(school);
-    this.startRefreshTokenTimer();
-    return school as School;
+  // if (this.schoolObject.some(s => s.userList[0].username === username)) {
+  //   const school = this.schoolObject.find(s => s.userList[0].username === username &&
+  //     s.userList[0].password === password);
+  //   console.log(school);
+  //   sessionStorage.setItem('currentSchool', JSON.stringify(school));
+  //   this.currentSchoolSubject.next(school);
+  //   this.startRefreshTokenTimer();
+  //   return school as School;
 
-  }
-  else
-  return null;
-  // throwError 'Username or password is invalid';
+  // }
+  // else
+  // return null;
 
 
 
@@ -105,12 +108,8 @@ private startRefreshTokenTimer() {
 
 }
 
-private stopRefreshTokenTimer(){
+private stopRefreshTokenTimer() {
   clearTimeout(this.refreshTokenTimeout);
 }
-
-
-
-
 
 }

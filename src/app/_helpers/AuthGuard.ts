@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
     const currentSchool = this.authService.currentSchoolValue;
     if (currentSchool) {
       if (route.data) {
-        if (route.data.roles.some(r => r === currentSchool.usersList[0].role[0].rolename)) {
+        if (route.data.roles.some(r => r === currentSchool.school[0].userList[0].role[0].rolename)) {
           return true;
         }
         else {

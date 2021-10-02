@@ -40,11 +40,11 @@ export class NavMenuComponent implements OnInit {
   ngOnInit() {
     this.authService.currentSchoolSubject.subscribe(res => {
       if(res != null){
-        if((res.name != null || res.name != undefined) && res.id > 0) {
+        if((res.school[0].name != null || res.school[0].name != undefined) && res.school[0].id > 0) {
           this.isAuthorized = true;
-          this.userName = res.usersList[0].username;
-          this.role = res.usersList[0].role[0].rolename;
-          this.schoolname = res.schoolname;
+          this.userName = res.school[0].userList[0].username;
+          this.role = res.school[0].userList[0].role[0].rolename;
+          this.schoolname = res.school[0].name;
           if(this.role === Roles.User)
           {
             this.isUser = true;

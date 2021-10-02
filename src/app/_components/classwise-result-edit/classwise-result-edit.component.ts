@@ -1,10 +1,9 @@
 import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { timingSafeEqual } from 'crypto';
-import { Studentsearchresult } from 'src/app/_models/studentsearchresult';
+import { StudentResult } from 'src/app/_models/StudentResult';
 import { AlertService } from 'src/app/_services/alert.service';
-import { StudentMarksService } from 'src/app/_services/student/student-marks.service';
+import { StudentService } from 'src/app/_services/student/student.service';
 
 @Component({
   selector: 'app-classwise-result-edit',
@@ -18,32 +17,31 @@ export class ClasswiseResultEditComponent implements OnInit {
   sid: string;
   sname: string;
   classsec: string;
-  firstlang: number;
-  secondlang: number;
+  telugu: number;
+  hindi: number;
   english: number;
   maths: number;
   science: number;
   social: number;
-  student: Studentsearchresult;
+  student: StudentResult[];
   //onUpdate = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
     private alertService: AlertService,
-    private studentService: StudentMarksService,
+    private studentService: StudentService,
     private dialogRef: MatDialogRef<ClasswiseResultEditComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
     ) {
       this.sid = this.data.sid;
-      this.sname = this.data.sname;
-      this.classsec = this.data.classsec;
-      this.firstlang = this.data.firstlang;
-      this.firstlang = this.data.firstlang;
-      this.secondlang = this.data.secondlang;
-      this.english = this.data.english;
-      this.maths = this.data.maths;
-      this.science = this.data.science;
-      this.social = this.data.social;
+      // this.sname = this.data.sname;
+      // this.classsec = this.data.classsec;
+      // this.telugu = this.data.firstlang;
+      // this.hindi = this.data.secondlang;
+      // this.english = this.data.english;
+      // this.maths = this.data.maths;
+      // this.science = this.data.science;
+      // this.social = this.data.social;
 
 
      }
@@ -53,9 +51,9 @@ export class ClasswiseResultEditComponent implements OnInit {
       sid: ['', []],
       sname: ['', []],
       classsec: ['', []],
-      firstlang: [null, [Validators.required, Validators.min(1), Validators.max(100),
+      telugu: [null, [Validators.required, Validators.min(1), Validators.max(100),
                   Validators.minLength(1), Validators.maxLength(3)]],
-      secondlang: [null, [Validators.required, Validators.min(1), Validators.max(100),
+      hindi: [null, [Validators.required, Validators.min(1), Validators.max(100),
                   Validators.minLength(1), Validators.maxLength(3)]],
       english: [null, [Validators.required, Validators.min(1), Validators.max(100),
                 Validators.minLength(1), Validators.maxLength(3)]],
@@ -68,14 +66,25 @@ export class ClasswiseResultEditComponent implements OnInit {
 
   });
 
-
+  this.studentService.getStudentMarksById(this.sid).subscribe(
+    res => {
+      this.sname = res.sname;
+      this.classsec = res.classsection;
+      this.telugu = res.telugu;
+      this.hindi = res.hindi;
+      this.english = res.english;
+      this.maths = res.maths;
+      this.science = res.science;
+      this.social = res.social;
+    }
+  );
 
   this.form.setValue({
-    sid:this.sid,
+    sid: this.sid,
     sname:this.sname,
     classsec:this.classsec,
-    firstlang : this.data.firstlang,
-    secondlang : this.data.secondlang,
+    telugu : this.data.telugu,
+    hindi : this.data.hindi,
     english: this.data.english,
     maths : this.data.maths,
     science : this.data.science,
@@ -103,22 +112,25 @@ onSubmit() {
 
 
 let student = {
-  sid :this.data.sid,
-  sname:this.f.sname.value,
-  classsection:this.f.classsec.value,
-  firstLan:this.f.firstlang.value,
+  sid : this.data.sid,
+  // sname: this.f.sname.value,
+  // classsection: this.f.classsec.value,
+  telugu: Number(this.f.firstlang.value),
+  hindi: Number(this.f.hindi.value),
+  english: Number(this.f.english.value),
+  maths: Number(this.f.maths.value),
+  social: Number(this.f.social.value),
+  science: Number(this.f.science.value)
 
 }
 
-let res = this.studentService.studentMarksUpdate(student);
-this.alertService.Success('Marks are updated');
+this.studentService.studentMarksUpdate(student).subscribe(res => {
 
 
+  this.dialogRef.close();
+  this.alertService.Success('Marks are updated');
+});
 
-
-//this.onUpdate.emit(res);
-
-this.dialogRef.close({data: student});
 //this.dialogRef.close({data: {firstlang:this.f.firstlang.value, sid:this.f.sid.value}});
 }
 

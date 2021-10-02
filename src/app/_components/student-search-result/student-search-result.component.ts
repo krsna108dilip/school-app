@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { Examtypes } from 'src/app/_models/examtypes';
-import { Studentsearchresult } from 'src/app/_models/studentsearchresult';
+import { StudentResult } from 'src/app/_models/StudentResult';
 import { AlertService } from 'src/app/_services/alert.service';
+import { StudentService } from 'src/app/_services/student/student.service';
 
 @Component({
   selector: 'app-student-search-result',
@@ -13,18 +14,21 @@ import { AlertService } from 'src/app/_services/alert.service';
 })
 export class StudentSearchResultComponent implements OnInit {
 
-  dataSource = new MatTableDataSource<Studentsearchresult>([]);
+  dataSource = new MatTableDataSource<StudentResult>([]);
   loading: boolean = false;
   submit: boolean = false;
   ssrForm: FormGroup;
   examtypes: Examtypes[];
 
-  displayColumns: string[] = ['sid', 'sname', 'classsection', 'firstLan', 'secondLan',
-'engilsh', 'maths', 'science', 'social', 'rank'];
+  displayColumns: string[] = ['id', 'sid', 'sname', 'classsection', 'telugu', 'hindi',
+'engilsh', 'maths', 'science', 'social', 'examtype'];
 
-  constructor(private dialog: MatDialog, private router: Router,
-            private formBuilder: FormBuilder,
-              private alertService: AlertService) { }
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private alertService: AlertService,
+    private studentService: StudentService) { }
 
   @ViewChild(MatPaginator, {static: true} ) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -37,89 +41,31 @@ export class StudentSearchResultComponent implements OnInit {
     });
 
     this.getExamTypes();
-    this.getData();
   }
 
   getExamTypes() {
-    this.examtypes  = [
-      { examtypeid: 1, examtypename: 'FA1'},
-      { examtypeid: 2, examtypename:  'FA2'},
-      { examtypeid: 3, examtypename: 'Quaterly'},
-      { examtypeid: 4, examtypename: 'Half Yearly'},
-      { examtypeid: 5, examtypename: 'Final'},
-    ]
+    this.studentService.getAllExamTypes().subscribe(res =>
+      this.examtypes = res);
+
+  //this.examtypes = this.studentService.getAllExamTypes();
+
+
+
+
+
+
+
+
+    // this.examtypes  = [
+    //   { examtypeid: 1, examtypename: 'FA1'},
+    //   { examtypeid: 2, examtypename:  'FA2'},
+    //   { examtypeid: 3, examtypename: 'Quaterly'},
+    //   { examtypeid: 4, examtypename: 'Half Yearly'},
+    //   { examtypeid: 5, examtypename: 'Final'},
+    // ]
   }
 
-  getData() {
-const res: Studentsearchresult[] = [
-  {
-    sid: 'TS057-03X-001',
-    sname: 'delep',
-    classsection: '10_A',
-    firstLan: '88',
-    secondLan: '99',
-    engilsh: '76',
-    maths: '10',
-    science: '23',
-    social: '40',
-    rank: '21'
-  },
-  {
-    sid: 'TS057-03X-002',
-    sname: 'delep',
-    classsection: '10_A',
-    firstLan: '88',
-    secondLan: '99',
-    engilsh: '76',
-    maths: '10',
-    science: '23',
-    social: '40',
-    rank: '21'
-  },
-  {
-    sid: 'TS057-03X-003',
-    sname: 'delep',
-    classsection: '10_A',
-    firstLan: '88',
-    secondLan: '99',
-    engilsh: '76',
-    maths: '10',
-    science: '23',
-    social: '40',
-    rank: '21'
-  },
-  {
-    sid: 'TS057-03X-004',
-    sname: 'delep',
-    classsection: '10_A',
-    firstLan: '88',
-    secondLan: '99',
-    engilsh: '76',
-    maths: '10',
-    science: '23',
-    social: '40',
-    rank: '21'
-  },
-  {
-    sid: 'TS057-03X-005',
-    sname: 'delep',
-    classsection: '10_A',
-    firstLan: '88',
-    secondLan: '99',
-    engilsh: '76',
-    maths: '10',
-    science: '23',
-    social: '40',
-    rank: '21'
-  }
 
-]
-
-    this.dataSource = new MatTableDataSource();
-    this.dataSource.data = res;
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator=this.paginator;
-  }
 
   get f() { return this.ssrForm.controls; }
 
@@ -136,12 +82,21 @@ const res: Studentsearchresult[] = [
       console.log(sid);
       console.log(etid);
 
+      this.studentService.getStudentResultByIDandExamType(sid, etid).subscribe(res => {
+
+        this.dataSource = new MatTableDataSource();
+        this.dataSource.data = res;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator=this.paginator;
+        this.loading = false;
+
+      });
 
 
       // get the data from service
 
 
-      this.loading = false;
+
   }
 
 }
